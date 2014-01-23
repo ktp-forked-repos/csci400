@@ -25,7 +25,7 @@ class WordGame
 =end
   def count_letters(word)
     letter_count = Hash.new(0)
-    word.chars { |letter| letter_count[letter] += 1 }
+    word.chars { |letter| letter_count[letter.to_sym] += 1 }
     letter_count.values.max
   end
 
@@ -44,7 +44,7 @@ class WordGame
 =end
 
   def leader_board(scores)
-   
+    
   end
 
 =begin
