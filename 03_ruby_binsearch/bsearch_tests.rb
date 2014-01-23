@@ -3,7 +3,7 @@ require 'test/unit'
 class KataBSearchTest < Test::Unit::TestCase
 
 def test_chop
-bs = KataBSearch.new
+bs = BSearch.new
     assert_equal(-1, bs.chop(3, []))
     assert_equal(-1, bs.chop(3, [1]))
     assert_equal(0, bs.chop(1, [1]))
@@ -27,3 +27,5 @@ bs = KataBSearch.new
     assert_equal(-1, bs.chop(8, [1, 3, 5, 7]))
 end
   end
+
+# Begin unit tests
