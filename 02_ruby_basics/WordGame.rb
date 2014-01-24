@@ -26,7 +26,16 @@ class WordGame
   def count_letters(word)
     letter_count = Hash.new(0)
     word.chars { |letter| letter_count[letter.to_sym] += 1 }
-    letter_count.values.max
+    # Note: a better way to do the following is:
+    #letter_count.values.max
+    # but the requrements say to use .each, so...
+    max = 0
+    letter_count.each do |key, value|
+      if value > max
+        max = value
+      end
+    end
+    max
   end
 
 =begin
@@ -44,7 +53,22 @@ class WordGame
 =end
 
   def leader_board(scores)
-    
+      puts
+      # Conditional return
+      leader = if scores.length == 1 then "Lone Wolf" else "Top Dog" end
+      puts "We have a " + leader
+      # Parallel assignment and splat
+      first, second, third, *rest = scores
+      # Iterator
+      sum = 0
+      rest.each { |score| sum += score }
+      # display_score, unless
+      display_score first, "first"
+      display_score second, "second"
+      display_score third, "third"
+      puts "The total of the remaining scores is " + sum.to_s unless sum == 0
+      # Congrats.
+      puts "Congratulations to " + leader
   end
 
 =begin
@@ -54,7 +78,11 @@ class WordGame
   - use string interpolation
 =end
   def display_score score, rank
-
+    if score == nil
+      puts "There is no #{rank} score"
+    else
+      puts "The #{rank} score is #{score}"
+    end
   end
 
 =begin
@@ -73,7 +101,16 @@ class WordGame
 =end
 
   def create_scores
-
+    scores = Array.new
+    score = 100
+    until scores.length == 8
+      scores << score
+      score -= 10
+      if scores.length <= 5
+        leader_board scores
+      end
+    end
+    scores
   end
 
 =begin
@@ -90,7 +127,13 @@ class WordGame
   - other bookkeeping (e.g., setting totals to 0, etc.) can be coded however you see fit.
 =end
   def get_quartiles(scores)
-
+    (0..scores.length-1).each do |i|
+      sum = 0
+      if i%(scores.length/4) == 0
+        (i..(i+scores.length/4-1)).each {|index| sum += scores[index]}
+        yield sum
+      end
+    end
   end
 
 =begin
@@ -101,7 +144,7 @@ Hint:
 - you can pass parameters to methods that contain a yield (not shown in slide)
 =end  
   def display_quartiles(scores)
-
+    get_quartiles(scores) { |total| puts "Quartile total: #{total}" }
   end
 
 end
@@ -125,3 +168,14 @@ puts "\nUnit tests follow..."
 Add a unit test to test the two word scores displayed above (hello and banana)
 and at least 3 others.
 =end
+
+class TestWordScores < Test::Unit::TestCase
+  def test_calc_scores
+    game = WordGame.new
+    assert_equal 7, game.word_score("hello")
+    assert_equal 9, game.word_score("banana")
+    assert_equal 15, game.word_score("mississippi")
+    assert_equal 2, game.word_score("a")
+    assert_equal 5, game.word_score("help")
+  end
+end
