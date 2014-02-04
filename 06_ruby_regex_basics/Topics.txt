@@ -1,0 +1,9 @@
+Don't use regex when you could be using a parser or lexer.
+https://programmers.stackexchange.com/questions/113237/when-you-should-not-use-regular-expressions
+
+Regex is extremely useful, and can be used from a variety of
+environments and languages. 
+http://www.websiterepairguy.com/articles/re/12_re.html
+
+Back referencing can help solve some difficult problems.
+http://coding.smashingmagazine.com/2009/05/06/introduction-to-advanced-regular-expressions/
