@@ -1,0 +1,26 @@
+# Requirements:
+# Five types of products
+# Actions with and without parameters
+# Be able to add rules to a product
+
+product 'book'
+packing_slip 'shipping'
+packing_slip 'royalty'
+
+product 'membership'
+activate
+email 'purchaser'
+
+product 'book'
+pay 'commission'
+
+product 'duck'
+email 'customer'
+include_free 'bubberducky'
+
+product 'ski pass'
+email 'purchaser'
+notify 'ski resort'
+
+product 'ski helmet'
+fill_warranty_card

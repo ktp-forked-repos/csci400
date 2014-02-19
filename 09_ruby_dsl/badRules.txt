@@ -1,0 +1,3 @@
+product 'book'
+paacking_slip 'royalty'
+packing_slip 'shipping'

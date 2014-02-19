@@ -1,0 +1,13 @@
+Tested on Ruby 1.9.3.
+
+# To run the program with the good rules file
+
+    ruby rules.rb
+
+# To run with the bad rules file
+
+    ruby rules.rb badRules.txt
+
+# To run the tests
+
+    ruby testBusinessRules.rb
