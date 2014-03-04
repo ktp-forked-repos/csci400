@@ -1,5 +1,3 @@
-require_relative "EmailLogLine"
-
 class EmailLogParser
   def initialize file
     @log = open(file).read.split /\n/
