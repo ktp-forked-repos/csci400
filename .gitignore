@@ -1,2 +1,4 @@
 *.zip
 Makefile
+*.h[io]
+*.o
