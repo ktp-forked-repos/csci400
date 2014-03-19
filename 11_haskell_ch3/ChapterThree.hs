@@ -82,4 +82,9 @@ orderThree' xs@[x, y, z] =
           y = orderTwo (tail xs)
 
 -- 9
--- 
+-- a) Pattern matching can be used to perform different actions based on
+--    type of data being input, while guards can test arbitrary
+--    conditions to determine what actions to run.
+-- b) Let bindings put the bindings before the expression, as opposed to
+--    where bindings that put the expressions first. Let bindings also
+--    act as expressions, while where bindings do not.
