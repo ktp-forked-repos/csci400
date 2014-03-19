@@ -23,7 +23,7 @@ threshold price qty size
     | total < size   = "Total is low"
     | total < medium = "Total is medium"
     | total < high   = "Total is high"
-    | otherwise      = "Total is extrodinary"
+    | otherwise      = "Total is extraordinary"
     where total = price * qty
           medium = size + (size - 1)
           high = medium + (size - 1)
@@ -32,11 +32,11 @@ threshold price qty size
 -- constants in where clause
 lactate :: (Fractional a, Ord a) => a -> a -> String
 lactate rate max
-    | rate <= easy*max        = "warmup"
-    | rate <= aerobic*max     = "aerobic"
-    | rate <= steadyState*max = "steadyState"
-    | rate <= anaerobic*max   = "anaerobic"
-    | otherwise               = "wow, don't do this for long!"
+    | rate >= competitive*max = "wow, don't do this for long!"
+    | rate >= anaerobic*max   = "anaerobic"
+    | rate >= steadyState*max = "steadyState"
+    | rate >= aerobic*max     = "aerobic"
+    | otherwise               = "warmup"
     where easy = 0.6
           aerobic = 0.7
           steadyState = 0.8
@@ -60,15 +60,26 @@ calcTriangleAreas xs =
 -- 7
 -- guards
 orderTwo :: (Ord a) => [a] -> [a]
-orderTwo (x:y)
+orderTwo [x, y]
     | x < y     = [x, y]
     | otherwise = [y, x]
 
 -- 8
 -- two different ways
 orderThree :: (Ord a) => [a] -> [a]
---orderThree (x:y:z:_)
---    | 
+orderThree xs@[x, y, z]
+    | head x /= head y = head (min x y) : (max x y)
+    | otherwise        = (min x y) ++ tail (max x y)
+    where x = orderTwo (take 2 xs)
+          y = orderTwo (tail xs)
+
+orderThree' xs@[x, y, z] =
+    if head x /= head y then
+        head (min x y) : (max x y)
+    else
+        (min x y) ++ tail (max x y)
+    where x = orderTwo (take 2 xs)
+          y = orderTwo (tail xs)
 
 -- 9
 -- 
