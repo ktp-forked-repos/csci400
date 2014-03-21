@@ -77,4 +77,4 @@ subList i n [] = []
 subList i n (x:xs)
     | i < 0 || n < 1 = []
     | i > 0          = subList (i-1) n xs
-    | i == 0         = x : subList i (n-1) xs
+    | otherwise      = x : subList i (n-1) xs
