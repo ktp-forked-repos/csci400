@@ -1,5 +1,7 @@
 module Chapter8 where
 
+import Control.Monad
+
 -- 1
 greeting :: IO ()
 greeting = do
@@ -26,7 +28,14 @@ sayHi = do
     putStrLn "What's up?"
 
 -- 4
+calcArea :: (Num a) => a -> a -> a
+calcArea x y = x*y
 
+calcAreas :: (Num a) => [a] -> [a] -> [a]
+calcAreas = zipWith calcArea
+
+printAreas :: (Num a, Show a) => [a] -> [a] -> IO ()
+printAreas x y = mapM_ print $ calcAreas x y
 
 -- 5
 printDirection :: Char -> String
@@ -37,6 +46,7 @@ printDirection c
     | c == 'l'  = "RIGHT"
     | otherwise = "NOWHERE"
 
---printDirections :: [Char] -> IO ()
---printDirections = do
-    
+printDirections :: [Char] -> IO ()
+printDirections xs = do
+    forM_ xs (\a -> do
+            putStrLn $ "You should go" ++ printDirection a)
