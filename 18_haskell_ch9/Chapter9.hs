@@ -16,17 +16,13 @@ piggly = do
 -- 3
 caesar :: Int -> Char -> Char
 caesar x y
-    | adj <= z && adj >= a       = chr adj
-    | adj <= capZ && adj >= capA = chr adj
-    | i <= z && i >= a           = chr $ adj - 26
-    | i <= capZ && i >= capA     = chr $ adj - 26
-    | otherwise                  = y
-    where adj  = x + ord y
-          i    = ord y
-          z    = ord 'z'
-          a    = ord 'a'
-          capZ = ord 'Z'
-          capA = ord 'A'
+    | not $ y `elem` range = y
+    | adj `elem` range     = adj
+    | y `elem` range       = chr $ ord adj - 26
+    | otherwise            = y
+    where adj   = chr $ x + ord y
+          i     = ord y
+          range = ['a'..'z'] ++ ['A'..'Z']
 
 -- 4
 encrypt :: Int -> IO ()
@@ -35,4 +31,9 @@ encrypt x = do
     interact $ map $ caesar x
 
 -- 5
-
+encryptFile :: Int -> IO ()
+encryptFile x = do
+    handle <- openFile "encryptMe.txt" ReadMode
+    contents <- hGetContents handle
+    putStr $ map (caesar x) contents
+    hClose handle
