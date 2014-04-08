@@ -16,10 +16,13 @@ piggly = do
 -- 3
 caesar :: Int -> Char -> Char
 caesar x y
-    | adj <= z && adj >= a = chr adj
-    | i <= z && i >= a     = 
-    | otherwise = 
-    where adj  = y + ord x
+    | adj <= z && adj >= a       = chr adj
+    | adj <= capZ && adj >= capA = chr adj
+    | i <= z && i >= a           = chr $ adj - 26
+    | i <= capZ && i >= capA     = chr $ adj - 26
+    | otherwise                  = y
+    where adj  = x + ord y
+          i    = ord y
           z    = ord 'z'
           a    = ord 'a'
           capZ = ord 'Z'
