@@ -1,0 +1,27 @@
+1. Static
+List all the variables, along with the program units where they are declared, that are visible in the bodies of Sub1, Sub2 and Sub3, assuming static scoping is used. 
+
+Sub1: A, Sub1; X, Main; Y, Sub1; Z, Sub1
+Sub2: A, Sub2; B, Sub2; X, Main; Y, Sub1; Z, Sub2
+Sub3: A, Sub3; W, Sub3; X, Sub3; Y, Sub1; Z, Sub1
+
+
+2. Dynamic
+a. main calls fun1; fun1 calls fun2; fun2 calls fun3
+d, fun3
+
+b. main calls fun1; fun1 calls fun3
+
+
+c. main calls fun2; fun2 calls fun3; fun3 calls fun1
+
+
+d. main calls fun3; fun3 calls fun1
+
+
+e. main calls fun1; fun1 calls fun3; fun3 calls fun2
+
+
+f. main calls fun3; fun3 calls fun2; fun2 calls fun1
+
+
