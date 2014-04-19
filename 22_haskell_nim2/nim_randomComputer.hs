@@ -3,7 +3,6 @@
 -- Note: Requires haskell-random package!
 
 import System.Random
-import Control.Applicative
 
 type Board = [Int]
 type Player = Bool
