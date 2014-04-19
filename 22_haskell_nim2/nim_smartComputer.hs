@@ -28,27 +28,35 @@ getSticks row = do
     sticks <- fmap read getLine
     if sticks `elem` [1..row] then return sticks else getSticks row
 
+updateBoard :: Board -> Int -> Int -> Board
+updateBoard board row sticks = beginning ++ [board !! row - sticks] ++ drop 1 end
+    where (beginning, end) = splitAt row board
+
 humanTurn :: Board -> IO Board
 humanTurn board = do
     row <- getRow board
     sticks <- getSticks $ board !! row
     let (beginning, end) = splitAt row board
-    return $ beginning ++ [board !! row - sticks] ++ drop 1 end
+    return $ updateBoard board row sticks
 
 digitalSum :: [Int] -> Int 
 digitalSum (x:xs) = foldr (xor) x xs
 
-pickRow :: Int -> Board -> Int
-pickRow sum board = getIndex $ map (isCadidate sum) board
+pickRow :: Board -> Int
+pickRow board = getIndex $ map (isCandidate sum) board
     where intLog2 (I# i#) = I# (wordLog2# (int2Word# i#))
+          sum = digitalSum board
           isCandidate sum row
                 | intLog2 row > intLog2 sum  = isCandidate sum $ row - 2^(intLog2 row)
                 | intLog2 row == intLog2 sum = 1
                 | otherwise                  = 0
           getIndex xs = minimum (filter (/=0) ([ x * y | x <- xs | y <- [1,2..] ])) - 1
 
+takeSticks :: Int -> Int -> Int
+takeSticks sum row = row - digitalSum [sum, row]
+
 computerTurn :: Board -> Board
-computerTurn = \xs -> case span (==0) xs of (x, y:ys) -> x ++ 0:ys
+computerTurn board = updateBoard board (pickRow board) (takeSticks (digitalSum board) (board !! (pickRow board)))
 
 winner :: Board -> Player -> String
 winner board human
