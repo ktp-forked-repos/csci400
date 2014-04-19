@@ -1,5 +1,12 @@
+
+{-# LANGUAGE MagicHash #-}
 -- Haskell Nim
 -- See http://www.archimedes-lab.org/game_nim/nim.html
+
+import Data.Bits
+import GHC.Integer.Logarithms
+import GHC.Types
+import GHC.Base
 
 type Board = [Int]
 type Player = Bool
@@ -27,6 +34,14 @@ humanTurn board = do
     sticks <- getSticks $ board !! row
     let (beginning, end) = splitAt row board
     return $ beginning ++ [board !! row - sticks] ++ drop 1 end
+
+digitalSum :: [Int] -> Int 
+digitalSum (x:xs) = foldr (xor) x xs
+
+pickRow :: Int -> Board -> Int
+pickRow sum board = (shorter) - ((intLog2 ((length board) .&. sum)) + 1)
+    where intLog2 (I# i#) = I# (wordLog2# (int2Word# i#))
+          shorter = min (length board - 1) (sum)
 
 computerTurn :: Board -> Board
 computerTurn = \xs -> case span (==0) xs of (x, y:ys) -> x ++ 0:ys
