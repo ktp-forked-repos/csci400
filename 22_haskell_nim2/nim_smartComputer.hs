@@ -1,5 +1,5 @@
-
 {-# LANGUAGE MagicHash #-}
+{-# LANGUAGE ParallelListComp #-}
 -- Haskell Nim
 -- See http://www.archimedes-lab.org/game_nim/nim.html
 
@@ -39,9 +39,13 @@ digitalSum :: [Int] -> Int
 digitalSum (x:xs) = foldr (xor) x xs
 
 pickRow :: Int -> Board -> Int
-pickRow sum board = (shorter) - ((intLog2 ((length board) .&. sum)) + 1)
+pickRow sum board = getIndex $ map (isCadidate sum) board
     where intLog2 (I# i#) = I# (wordLog2# (int2Word# i#))
-          shorter = min (length board - 1) (sum)
+          isCandidate sum row
+                | intLog2 row > intLog2 sum  = isCandidate sum $ row - 2^(intLog2 row)
+                | intLog2 row == intLog2 sum = 1
+                | otherwise                  = 0
+          getIndex xs = minimum (filter (/=0) ([ x * y | x <- xs | y <- [1,2..] ])) - 1
 
 computerTurn :: Board -> Board
 computerTurn = \xs -> case span (==0) xs of (x, y:ys) -> x ++ 0:ys
